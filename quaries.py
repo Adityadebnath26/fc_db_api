@@ -79,17 +79,18 @@ def select_from_table(table_name: str, filters: dict = None, columns: str = "*")
         conn.close()
 
 def select_by_name(name):
-    conn=get_connection()
+    conn = get_connection()
     try:
         with conn.cursor() as cur:
-            query=""" SELECT * FROM players 
-            WHERE player_name LIKE %s"""
-
+            query = """SELECT * FROM players WHERE player_name LIKE %s"""
+            
+            # Pass the parameter as a tuple
             cur.execute(query, (f"%{name}%",))
-            data=cur.fetchall()
+            
+            data = cur.fetchall()
             return data
     finally:
-        conn.close() 
+        conn.close()
 
 
         
