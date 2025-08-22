@@ -15,14 +15,14 @@ def root():
 
 @app.post("/get_players/query")
 def query_table(data: QueryInput):
-
-    if list((data.filters).keys())[0]=="player_name" and data.table=="players":
-        result=select_by_name((data.filters)["player_name"])
-        return {"rows":result}
-    else:
-        result = select_from_table(
-            table_name=data.table,
-            filters=data.filters,
-            columns=data.columns
-        )
-        return {"rows": result}
+    result = select_from_table(
+        table_name=data.table,
+        filters=data.filters,
+        columns=data.columns
+    )
+    return {"rows": result}
+    
+@app.get("/get_players_by_name/{name}")
+def get_players_by_name(name:str):
+    result=select_by_name(name)
+    return {"rows": result}
