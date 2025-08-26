@@ -49,6 +49,11 @@ def cancel_purchase(purchase_id):
         conn.close()
 
 def select_from_table(table_name: str, filters: dict = None, columns: str = "*"):
+    if not table_name.strip():
+        raise ValueError("Table name cannot be empty")
+    if not columns.strip():
+        columns = "*"
+
     conn = get_connection()
     try:
         with conn.cursor() as cur:
@@ -58,24 +63,24 @@ def select_from_table(table_name: str, filters: dict = None, columns: str = "*")
             if filters:
                 conditions = []
                 for key, condition in filters.items():
-                    # if filter is simple value, treat as "="
                     if not isinstance(condition, dict):
                         conditions.append(f"{key} = %s")
                         values.append(condition)
                     else:
-                        # condition is a dict of operator:value
                         for op, val in condition.items():
                             if op not in [">", "<", ">=", "<=", "=", "!=", "LIKE"]:
                                 raise ValueError(f"Unsupported operator: {op}")
                             conditions.append(f"{key} {op} %s")
                             values.append(val)
 
-                query += " WHERE " + " AND ".join(conditions)
-            query+=" ORDER BY overall DESC"
+                if conditions:  # only append WHERE if not empty
+                    query += " WHERE " + " AND ".join(conditions)
 
+            query += " ORDER BY overall DESC"
+
+            print("DEBUG SQL:", query, values)  # ✅ helpful debug
             cur.execute(query, values)
-            result = cur.fetchall()
-            return result
+            return cur.fetchall()
     finally:
         conn.close()
 
