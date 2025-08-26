@@ -123,23 +123,23 @@ def root():
 # Protected Routes
 # ---------------------
 @app.post("/players")
-def query_table(data: QueryInput, user: str = Depends(get_current_user)):
+def query_table(data: QueryInput):
     result = select_from_table(
         table_name=data.table,
         filters=data.filters,
         columns=data.columns
     )
-    return {"rows": result, "requested_by": user}
+    return {"rows": result}
 
 @app.get("/players_name/{name}")
-def get_players_by_name(name: str, user: str = Depends(get_current_user)):
+def get_players_by_name(name: str):
     result = select_by_name(name)
-    return {"rows": result, "requested_by": user}
+    return {"rows": result}
 
 @app.get("/players_id/{id}")
-def get_players_by_id(id: int, user: str = Depends(get_current_user)):
+def get_players_by_id(id: int):
     result = select_by_id(id)
-    return {"rows": result, "requested_by": user}
+    return {"rows": result}
 
 
 
