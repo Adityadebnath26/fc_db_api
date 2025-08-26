@@ -71,6 +71,7 @@ def select_from_table(table_name: str, filters: dict = None, columns: str = "*")
                             values.append(val)
 
                 query += " WHERE " + " AND ".join(conditions)
+            query+=" ORDER BY overall DESC"
 
             cur.execute(query, values)
             result = cur.fetchall()
@@ -82,7 +83,7 @@ def select_by_name(name):
     conn = get_connection()
     try:
         with conn.cursor() as cur:
-            query = """SELECT * FROM players WHERE player_name LIKE %s"""
+            query = """SELECT * FROM players WHERE player_name LIKE %s ORDER BY overall DESC"""
             
             # Pass the parameter as a tuple
             cur.execute(query, (f"%{name}%",))
@@ -91,7 +92,6 @@ def select_by_name(name):
             return data
     finally:
         conn.close()
-
 
         
 
