@@ -84,6 +84,7 @@ def select_from_table(table_name: str, filters: dict = None, columns: str = "*")
     finally:
         conn.close()
 
+
 def select_by_name(name):
     conn = get_connection()
     try:
@@ -97,6 +98,21 @@ def select_by_name(name):
             return data
     finally:
         conn.close()
+
+def select_by_id(id):
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            query = """SELECT * FROM players WHERE player_id=%s"""
+            
+            # Pass the parameter as a tuple
+            cur.execute(query, (id,))
+            
+            data = cur.fetchall()
+            return data
+    finally:
+        conn.close()
+
 
         
 
