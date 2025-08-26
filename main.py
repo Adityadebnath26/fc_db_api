@@ -7,7 +7,7 @@ from jose import JWTError, jwt
 import os
 
 from db import get_connection
-from quaries import select_from_table, select_by_name, purchase, cancel_purchase
+from quaries import select_from_table, select_by_name, purchase, cancel_purchase, select_by_id
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -122,7 +122,7 @@ def root():
 # ---------------------
 # Protected Routes
 # ---------------------
-@app.post("/get_players/query")
+@app.post("/players")
 def query_table(data: QueryInput, user: str = Depends(get_current_user)):
     result = select_from_table(
         table_name=data.table,
@@ -131,10 +131,17 @@ def query_table(data: QueryInput, user: str = Depends(get_current_user)):
     )
     return {"rows": result, "requested_by": user}
 
-@app.get("/get_players_by_name/{name}")
+@app.get("/players_name/{name}")
 def get_players_by_name(name: str, user: str = Depends(get_current_user)):
     result = select_by_name(name)
     return {"rows": result, "requested_by": user}
+
+@app.get("/players_id/{id}")
+def get_players_by_id(id: int, user: str = Depends(get_current_user)):
+    result = select_by_id(id)
+    return {"rows": result, "requested_by": user}
+
+
 
 
 
