@@ -48,7 +48,8 @@ def cancel_purchase(purchase_id):
         cur.close()
         conn.close()
 
-def select_from_table(table_name: str, filters: dict = None, columns: str = "*"):
+def select_from_table(table_name: str, filters: dict = None, columns: str = "*",,limit: int | None = None,
+    offset: int | None = None):
     if not table_name.strip():
         raise ValueError("Table name cannot be empty")
     if not columns.strip():
@@ -77,6 +78,15 @@ def select_from_table(table_name: str, filters: dict = None, columns: str = "*")
                     query += " WHERE " + " AND ".join(conditions)
 
             query += " ORDER BY overall DESC"
+
+            # LIMIT / OFFSET
+            if limit is not None:
+                query += " LIMIT %s"
+                values.append(limit)
+
+            if offset is not None:
+                query += " OFFSET %s"
+                values.append(offset)
 
             print("DEBUG SQL:", query, values)  # ✅ helpful debug
             cur.execute(query, values)
