@@ -129,7 +129,7 @@ def query_table(data: QueryInput):
     result = select_from_table(
         table_name=data.table,
         filters=data.filters,
-        columns=data.columns
+        columns=data.columns,
         limit=data.limit,
         offset=data.offset
     )
