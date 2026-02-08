@@ -48,7 +48,7 @@ def cancel_purchase(purchase_id):
         cur.close()
         conn.close()
 
-def select_from_table(table_name: str, filters: dict = None, columns: str = "*",,limit: int | None = None,
+def select_from_table(table_name: str, filters: dict = None, columns: str = "*",limit: int | None = None,
     offset: int | None = None):
     if not table_name.strip():
         raise ValueError("Table name cannot be empty")
