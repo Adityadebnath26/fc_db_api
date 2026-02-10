@@ -46,7 +46,7 @@ class QueryInput(BaseModel):
     columns: Optional[str] = "*"
     filters: Optional[Dict[str, Any]] = None
     limit: Optional[int] = None
-    offset: Optional[int] = None
+    page: Optional[int] = None
 
 class PurchaseRequest(BaseModel):
     player_id: int
@@ -131,7 +131,7 @@ def query_table(data: QueryInput):
         filters=data.filters,
         columns=data.columns,
         limit=data.limit,
-        offset=data.offset
+        offset=(data.page)*10
     )
     return {"rows": result}
 
